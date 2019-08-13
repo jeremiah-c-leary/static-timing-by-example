@@ -3,14 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Static Timing by Example's documentation!
-====================================================
+Welcome to Static Timing by Example
+===================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-
+   overview.rst
+   principles.rst
+   source_synchronous_input_timing.rst
 
 Indices and tables
 ==================

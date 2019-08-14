@@ -9,11 +9,40 @@ The diagram below illustrates the timing elements involved:
 .. figure:: img/architecture.png
    :alt: architecture
 
-These can be grouped into three major groups:
+These can be divided into three major groups:
 
 -  Source Device Variables
 -  Trace Delays
 -  Device Delays
+
+Waveform
+--------
+
+The timing diagram below shows the setup and hold edges.
+
+.. wavedrom::
+
+   {
+     "signal" : [
+        { "name": "launch clock",  "wave": "01...0...1.", "node": ".1...2...3."},
+        { "name": "",              "wave": ""},
+        { "name": "data",          "wave": "2.x....2..x"},
+        { "name": "",              "wave": ""},
+        { "name": "capture clock", "wave": "01...0...1.", "node": ".a...b...c."},
+     ],
+     "edge" : [
+       '1-~>c setup', '1-~>a hold'
+     ]
+   }
+
+Data is launched from the rising edge of the launch clock.
+Data is captured on the risinge edge of the capture clock.
+
+This means the setup check is from edge 1 to edge c.
+Data must be stable before edge C to pass the setup check at the capture flop.
+
+The hold check is from edge 1 to edge a.
+Data must be held stable after edge A to pass the hold check at the capture flop.
 
 Source Device Variables
 -----------------------

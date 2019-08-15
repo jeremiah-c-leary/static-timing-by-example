@@ -44,7 +44,7 @@ Clock Period
 ~~~~~~~~~~~~
 
 Setup checks are dependent on the frequency of the clock and will use the clock period variable.
-Hold checks are frequency independent, and will therefore not use the clock period variable.
+Hold checks are frequency independent, and will not use the clock period variable.
 
 .. code:: tcl
 
@@ -55,7 +55,7 @@ Clock to Out
 ~~~~~~~~~~~~
 
 The clock to out variable defines the relationship between the launching edge of the clock and the data.
-It is divided into a maximum and minimum value.
+There will be maximum and minimum values.
 
 The maximum is the time from the launching clock to the latest data will be valid.
 The minimum is the time from the launching clock to the earliest data will be invalid.
@@ -127,7 +127,7 @@ For the clock path, it includes routing through the clock tree, any clock manage
     set t_clock_routing_max 1.2
     set t_clock_routing_min 0.4
 
-Setup and hold constraints
+Setup and Hold Constraints
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The setup and hold constraints on the capturing flop represent the minimum times data must be stable on either side of the capturing clock edge.
@@ -188,14 +188,14 @@ Writing Timing Constraints
 --------------------------
 
 The previous sections described the timing arcs and derived the equations.
-Now we need to write the timing contraints to ensure the interface will be timed correctly.
+Now we need to write timing contraints to ensure the interface will be timed correctly.
 Writing the constraints involves the following steps:
 
 -  Create the receive clock
 -  Apply delays to data path
 
-It is extremely important to write the constraints to match reality.
-The following will step through every command and explain why each are being used.
+It is important to write the constraints to match reality.
+The following will step through every command and explain why it is used.
 
 Create Receive Clock
 ~~~~~~~~~~~~~~~~~~~~

@@ -1,0 +1,13 @@
+{
+  "signal" : [
+    { "name": "launch clock",  "wave": "01...0...1.", "node": ".1...2...3."},
+    { "name": "",              "wave": ""},
+    { "name": "data",          "wave": "2.x....2..x"},
+    { "name": "",              "wave": ""},
+    { "name": "capture clock", "wave": "..01...0...", "node": "...a...b..."}
+  ],
+  "edge" : [
+    "1-~>a setup",
+    "3-~>a hold"
+  ]
+}

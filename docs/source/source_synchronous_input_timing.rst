@@ -20,20 +20,7 @@ Waveform
 
 The timing diagram below shows the setup and hold edges.
 
-.. wavedrom::
-
-   {
-     "signal" : [
-        { "name": "launch clock",  "wave": "01...0...1.", "node": ".1...2...3."},
-        { "name": "",              "wave": ""},
-        { "name": "data",          "wave": "2.x....2..x"},
-        { "name": "",              "wave": ""},
-        { "name": "capture clock", "wave": "01...0...1.", "node": ".a...b...c."},
-     ],
-     "edge" : [
-       '1-~>c setup', '1-~>a hold'
-     ]
-   }
+.. figure:: output.svg
 
 Data is launched from the rising edge of the launch clock.
 Data is captured on the risinge edge of the capture clock.

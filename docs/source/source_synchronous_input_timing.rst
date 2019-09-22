@@ -7,7 +7,6 @@ In addition, there is a known relationship between the clock and the data.
 The diagram below illustrates the timing elements involved:
 
 .. figure:: img/architecture.png
-   :alt: architecture
 
 These can be divided into three major groups:
 
@@ -46,11 +45,6 @@ Clock Period
 Setup checks are dependent on the frequency of the clock and will use the clock period variable.
 Hold checks are frequency independent, and will not use the clock period variable.
 
-.. code:: tcl
-
-    set clock_frequency_mhz 25
-    set t_clock_period [expr 1/clock_frequency_mhz * 1000]
-
 Clock to Out
 ~~~~~~~~~~~~
 
@@ -61,11 +55,6 @@ The maximum is the time from the launching clock to the latest data will be vali
 The minimum is the time from the launching clock to the earliest data will be invalid.
 
 The difference between the two numbers defines the region in which data is unstable.
-
-.. code:: tcl
-
-    set t_cko_max 2.8
-    set t_cko_min 1.2
 
 Trace delays
 ------------
@@ -192,7 +181,7 @@ Now we need to write timing contraints to ensure the interface will be timed cor
 Writing the constraints involves the following steps:
 
 -  Create the receive clock
--  Apply delays to data path
+-  Apply delays to input data path
 
 It is important to write the constraints to match reality.
 The following will step through every command and explain why it is used.
@@ -209,12 +198,10 @@ We will use the **create_clock** command to create the receive clock.
 When the command is issued, the clock is placed on the input pin, point **A** in the diagram below:
 
 .. figure:: img/create_clock.png
-   :alt: create\_clock
 
 However, we need to move the clock to point B in the diagram below:
 
 .. figure:: img/set_clock_latency.png
-   :alt: set\_clock\_latency
 
 We move the clock to the output of the transmitting device using the **set\_clock\_latency** command:
 
@@ -224,9 +211,23 @@ We move the clock to the output of the transmitting device using the **set\_cloc
     set_clock_latency -source -min $t_clock_trace_min [get_clocks $clock_pin]
 
 The **-max** sets the maximum trace delay on the clock, while the **-min** will set the minimum trace delay on the clock.
+the **-source** indicates the delay on the clock is before the point the clock is defined.
 
 Apply Delays to Data Path
 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We need to model the external world for the timing en
+By adding the just the trace delay, we will be placing the data at point A in the diagram below:
+
+.. figure:: img/set_input_delay_data.png
+
+However, principle CLK-001 states for valid timing we must be able to trace back to the same clock point.
+We need to move the launching to point B in the diagram below:
+
+.. figure:: img/set_input_delay_data_and_cko.png
+
+We do this by adding the clock to out to the trace delay:
+The data path and clock path now originate from the same point so the timing analysis will be valid.
 
 We will use the **set\_input\_delay** command to add the clock to out and data trace delay to the data pins.
 This command will also bind the clock to the data pins.
@@ -238,13 +239,7 @@ This command will also bind the clock to the data pins.
 
 The **-clock** argument tells the timing tool the delays are relative to the clock specified.
 The **-source\_latency\_included** argument tells the timing tool we have added source latency to the clock path using the **set\_clock\_latency** command.
-
-By adding the clock to out and the trace delay, we have placed the data at point A in the diagram below:
-
-.. figure:: img/set_input_delay.png
-   :alt: set\_input\_delay
-
-The data path and clock path now originate from the same point so the timing analysis will be valid.
+   
 
 Validating Timing Report
 ------------------------

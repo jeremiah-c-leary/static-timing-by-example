@@ -56,6 +56,11 @@ The minimum is the time from the launching clock to the earliest data will be in
 
 The difference between the two numbers defines the region in which data is unstable.
 
+.. code:: tcl
+
+    set t_cko_max 2.8
+    set t_cko_min 1.2
+
 Trace delays
 ------------
 
@@ -256,3 +261,64 @@ This includes:
 -  data path cells
 -  clock path cells
 -  slack
+
+Setup Report
+~~~~~~~~~~~~
+
+Below is an example setup report for this interface:
+
+.. figure:: img/setup_timing_report.png
+
+To validate this report against the constraints, we will be performing the following steps:
+
+#. Validate Clock Edges
+#. Validate Clock Source Latency
+#. Validate Input Delay
+
+Validate Clock Edges
+~~~~~~~~~~~~~~~~~~~~
+
+First thing we do is validate the timing edges:
+
+.. figure:: img/validate_edges.png
+
+Refering to the waveform at the beginning, we expect the capture edge to be one clock cycle, 20 ns, from the launching edge.
+In the report, we see the launch edge is at 0.000 ns and the capture edge is at 20.000 ns.
+This validates we are using the correct edges.
+
+Validate Clock Source Latency
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next we check the clock source latency is included:
+
+.. figure:: img/clock_source_latency.png
+
+We check there is no clock latency reported in the data path.
+In this report, the **clock_network_delay** is set to **0.000 ns**.
+
+We check the source latency we defined is included in the clock path.
+In our case, **t_clock_trace_min** is defined as *0.400 ns*.
+This matches the source latency value.
+
+We also check the **Element** is the clock pin we expect.
+In this report, the clock path starts at the pin **I_CLK**
+
+Everything is as we expected.
+This validates we have created the clock and the source clock latency has been applied correctly.
+
+Validate Input Delay
+~~~~~~~~~~~~~~~~~~~~
+
+Next we check the input delay in included:
+
+.. figure:: img/input_delay.png
+
+We check trhe input delay value is included and the correct value.
+In this report, **iExt** is the input delay value and is 4.000 ns.
+This matchtes the data latency where **t_cko_max**, 2.8 ns, plus **t_data_trace_max**, 1.2 ns, is equal to 4.000 ns.
+
+We also check the **Element** is the data pin we expect.
+In this report, the data path starts at pin **I_DATA**.
+
+Everything is as we expected.
+This validates the input delay is the correct value and has been applied to the correct pin.

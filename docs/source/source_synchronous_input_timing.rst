@@ -22,7 +22,7 @@ The timing diagram below shows the setup and hold edges.
 .. figure:: output.svg
 
 Data is launched from the rising edge of the launch clock.
-Data is captured on the risinge edge of the capture clock.
+Data is captured on the rising edge of the capture clock.
 
 This means the setup check is from edge 1 to edge c.
 Data must be stable before edge C to pass the setup check at the capture flop.
@@ -146,13 +146,13 @@ The equation is an inequality and we can re-arrange the equation:
 
 .. math:: data_{min} + cko_{min} - clock_{max} - t_{hold} > 0
 
-We can see from this equation that if the data delay helps a hold check while clock delay and a positive hold requirements hurts.
+We can see from this equation that the data delay helps a hold check while clock delay and a positive hold requirement hurts.
 
 Expanding the data and clock path yields:
 
 .. math:: cko_{min} + data_{ trace_{min}} + data_{pad_{min}} + data_{routing_{min}} - clock_{trace_{max}} - clock_{pad_{max}} - clock_{routing_{max}} - t_{hold} > 0
 
-This equation tells us if the is enough slack in the hold timing check.
+This equation tells us if there is enough slack in the hold timing check.
 
 A negative slack indicates the data path is not long enough to meet the hold requirement on the capturing flop.
 To fix this, either increase the delay in the data path and/or decrease the delay in the clock path.
@@ -221,8 +221,8 @@ the **-source** indicates the delay on the clock is before the point the clock i
 Apply Delays to Data Path
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We need to model the external world for the timing en
-By adding the just the trace delay, we will be placing the data at point A in the diagram below:
+We need to model the external world for the timing engine.
+By adding just the trace delay, we will be placing the data at point A in the diagram below:
 
 .. figure:: img/set_input_delay_data.png
 
@@ -240,7 +240,7 @@ This command will also bind the clock to the data pins.
 .. code:: tcl
 
     set_input_delay -clock [get_clocks $clock_pin] -max -source_latency_included [expr $t_cko_max + $t_data_trace_max] [get_pins $data_pins]
-    set_input_delay -clock [get_clocks $clock_pin] -min -source_latency_included [expr $t_cko_min + $t_data_trace_max] [get_pins $data_pins]
+    set_input_delay -clock [get_clocks $clock_pin] -min -source_latency_included [expr $t_cko_min + $t_data_trace_min] [get_pins $data_pins]
 
 The **-clock** argument tells the timing tool the delays are relative to the clock specified.
 The **-source\_latency\_included** argument tells the timing tool we have added source latency to the clock path using the **set\_clock\_latency** command.
@@ -313,7 +313,7 @@ Next we check the input delay in included:
 
 .. figure:: img/input_delay.png
 
-We check trhe input delay value is included and the correct value.
+We check the input delay value is included and the correct value.
 In this report, **iExt** is the input delay value and is 4.000 ns.
 This matchtes the data latency where **t_cko_max**, 2.8 ns, plus **t_data_trace_max**, 1.2 ns, is equal to 4.000 ns.
 
